@@ -42,7 +42,7 @@ export const DECLINE_CODES: Record<DeclineCode, DeclineCodeInfo> = {
     nextSteps:
       'The customer needs to contact their card issuer to make sure their card can be used to make this type of purchase.',
     nextUserAction:
-      'Your card issuer may not support this type of purchase, please contact your card issues for more information.',
+      'Your card issuer may not support this type of purchase, please contact your card issuer for more information.',
     translations: {
       ja: {
         description: 'カードはこのタイプの購入をサポートしません。',
@@ -355,7 +355,7 @@ export const DECLINE_CODES: Record<DeclineCode, DeclineCodeInfo> = {
     translations: {
       ja: {
         description:
-          'カードでこの支払いを行うことはできません(紛失または盗難にあったと報告されている可能性があります)。',
+          'カードでこの支払いを行うことはできません（紛失または盗難にあったと報告されている可能性があります）。',
         nextUserAction: '詳しくはカード発行会社にお問い合わせください。',
       },
     },
@@ -366,8 +366,8 @@ export const DECLINE_CODES: Record<DeclineCode, DeclineCodeInfo> = {
     nextUserAction: 'Please use another card or method of payment.',
     translations: {
       ja: {
-        description: 'カードは未知の理由で拒否されました。',
-        nextUserAction: '',
+        description: 'PIN試行回数の上限を超えました。',
+        nextUserAction: '別のカードまたはお支払い方法をご利用ください。',
       },
     },
   },
@@ -407,7 +407,7 @@ export const DECLINE_CODES: Record<DeclineCode, DeclineCodeInfo> = {
     translations: {
       ja: {
         description:
-          'カードでこの支払いを行うことはできません(紛失または盗難にあったと報告されている可能性があります)。',
+          'カードでこの支払いを行うことはできません（紛失または盗難にあったと報告されている可能性があります）。',
         nextUserAction: '詳しくはカード発行会社にお問い合わせください。',
       },
     },

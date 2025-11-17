@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import type { DeclineCodeInfo } from '../src/index';
 import {
   getAllDeclineCodes,
   getDeclineDescription,
@@ -24,27 +25,23 @@ describe('getDeclineDescription', () => {
     expect(result.code).toHaveProperty('description');
     expect(result.code).toHaveProperty('nextSteps');
     expect(result.code).toHaveProperty('nextUserAction');
-    expect((result.code as any).description).toBe(
-      'The card has been declined for an unknown reason.',
-    );
+    if ('description' in result.code) {
+      expect(result.code.description).toBe('The card has been declined for an unknown reason.');
+    }
   });
 
   it('should return correct information for insufficient_funds', () => {
     const result = getDeclineDescription('insufficient_funds');
-    expect((result.code as any).description).toBe(
-      'The card has insufficient funds to complete the purchase.',
-    );
-    expect((result.code as any).nextUserAction).toBe(
-      'Please try again using an alternative payment method.',
-    );
+    const code = result.code as DeclineCodeInfo;
+    expect(code.description).toBe('The card has insufficient funds to complete the purchase.');
+    expect(code.nextUserAction).toBe('Please try again using an alternative payment method.');
   });
 
   it('should include Japanese translations', () => {
     const result = getDeclineDescription('insufficient_funds');
-    expect((result.code as any).translations).toHaveProperty('ja');
-    expect((result.code as any).translations.ja.description).toBe(
-      'カードの購入に必要な資金が不足しています。',
-    );
+    const code = result.code as DeclineCodeInfo;
+    expect(code.translations).toHaveProperty('ja');
+    expect(code.translations?.ja?.description).toBe('カードの購入に必要な資金が不足しています。');
   });
 });
 

@@ -17,17 +17,17 @@ import type { DeclineCode, DeclineCodeResult, Locale } from './types';
  * ```
  */
 export function getDeclineDescription(declineCode?: string): DeclineCodeResult {
-  if (!declineCode) {
+  if (!declineCode || !isValidDeclineCode(declineCode)) {
     return {
       docVersion: DOC_VERSION,
       code: {},
     };
   }
 
-  const code = DECLINE_CODES[declineCode as DeclineCode];
+  const code = DECLINE_CODES[declineCode];
   return {
     docVersion: DOC_VERSION,
-    code: code || {},
+    code,
   };
 }
 
@@ -46,8 +46,11 @@ export function getDeclineDescription(declineCode?: string): DeclineCodeResult {
  * ```
  */
 export function getDeclineMessage(declineCode: string, locale: Locale = 'en'): string | undefined {
-  const codeInfo = DECLINE_CODES[declineCode as DeclineCode];
-  if (!codeInfo) return undefined;
+  if (!isValidDeclineCode(declineCode)) {
+    return undefined;
+  }
+
+  const codeInfo = DECLINE_CODES[declineCode];
 
   if (locale === 'en') {
     return codeInfo.nextUserAction;
