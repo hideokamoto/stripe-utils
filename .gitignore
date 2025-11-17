@@ -3,14 +3,25 @@ node_modules
 jspm_packages
 example.json
 
+# Build output
+dist
+coverage
+
 # Serverless directories
 .serverless
 
 # direnv resource
 .envrc
+.env
 
+# IDE
 .idea/
+.vscode
 .DS_Store
 
+# Test files
 test.js
 test.json
+
+# Logs
+*.log
