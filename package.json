@@ -1,35 +1,54 @@
 {
-  "name": "stripe-utils",
-  "version": "1.1.1",
-  "description": "utility functions for stripe",
-  "main": "index.js",
-  "scripts": {
-    "test": "mocha tests/unit/ -R spec --recursive",
-    "prepublishOnly": "npm test",
-    "release": "np"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/megumiteam/stripe-utils.git"
-  },
-  "bugs": {
-    "url": "https://github.com/megumiteam/stripe-utils/issues"
-  },
-  "keywords": [
-    "stripe"
-  ],
-  "author": "Hidetaka Okamoto <info@wp-kyoto.net> (https://wp-kyoto.net)",
-  "license": "MIT",
-  "engines": {
-    "node": ">= 8.10.0"
-  },
-  "dependencies": {
-    "moment": "^2.22.2",
-    "stripe": "^8.0.0"
-  },
-  "devDependencies": {
-    "mocha": "8.2.1",
-    "np": "^10.2.0",
-    "power-assert": "1.6.1"
-  }
+	"name": "stripe-utils",
+	"version": "1.1.1",
+	"description": "utility functions for stripe",
+	"type": "module",
+	"main": "./dist/stripe-utils.cjs.js",
+	"module": "./dist/stripe-utils.es.js",
+	"types": "./dist/index.d.ts",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/stripe-utils.es.js",
+			"require": "./dist/stripe-utils.cjs.js"
+		}
+	},
+	"files": ["dist"],
+	"scripts": {
+		"build": "vite build && tsc --emitDeclarationOnly",
+		"test": "vitest run",
+		"test:watch": "vitest",
+		"test:coverage": "vitest run --coverage",
+		"lint": "biome check .",
+		"lint:fix": "biome check --write .",
+		"format": "biome format --write .",
+		"prepublishOnly": "npm run build && npm test",
+		"release": "np"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/megumiteam/stripe-utils.git"
+	},
+	"bugs": {
+		"url": "https://github.com/megumiteam/stripe-utils/issues"
+	},
+	"keywords": ["stripe"],
+	"author": "Hidetaka Okamoto <info@wp-kyoto.net> (https://wp-kyoto.net)",
+	"license": "MIT",
+	"engines": {
+		"node": ">= 18.0.0"
+	},
+	"dependencies": {
+		"moment": "^2.22.2",
+		"stripe": "^8.0.0"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^1.9.4",
+		"@types/node": "^22.10.2",
+		"@vitest/coverage-v8": "^2.1.8",
+		"np": "^10.2.0",
+		"typescript": "^5.7.2",
+		"vite": "^6.0.3",
+		"vitest": "^2.1.8"
+	}
 }

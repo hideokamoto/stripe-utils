@@ -3,6 +3,10 @@ node_modules
 jspm_packages
 example.json
 
+# Build output
+dist
+coverage
+
 # Serverless directories
 .serverless
 
