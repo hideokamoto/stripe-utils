@@ -4,7 +4,9 @@
   "description": "utility functions for stripe",
   "main": "index.js",
   "scripts": {
-    "test": "mocha tests/unit/ -R spec --recursive"
+    "test": "mocha tests/unit/ -R spec --recursive",
+    "prepublishOnly": "npm test",
+    "release": "np"
   },
   "repository": {
     "type": "git",
@@ -27,6 +29,7 @@
   },
   "devDependencies": {
     "mocha": "8.2.1",
+    "np": "^10.2.0",
     "power-assert": "1.6.1"
   }
 }
