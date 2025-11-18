@@ -16,6 +16,18 @@ A lightweight, zero-dependency TypeScript library providing human-readable descr
 - 🔄 **Up-to-date** - Based on Stripe API documentation (2024-12-18)
 - ✅ **Well Tested** - Comprehensive test coverage
 
+## About This Project
+
+This library is a complete TypeScript rewrite and continuation of the original [`stripe-utils`](https://github.com/megumiteam/stripe-utils) package. The project has been:
+
+- **Renamed** from `stripe-utils` to `stripe-decline-codes` to better reflect its focused scope
+- **Rewritten** entirely in modern TypeScript with full type safety
+- **Modernized** with current tooling (Vite, Biome, Vitest)
+- **Focused** exclusively on Stripe decline code handling (subscription utilities removed)
+- **Updated** with the latest Stripe decline codes (2024-12-18)
+
+Credit to the original [stripe-utils project](https://github.com/megumiteam/stripe-utils) for the initial implementation.
+
 ## Installation
 
 ```bash
