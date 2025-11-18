@@ -1,6 +1,6 @@
 {
   "name": "stripe-decline-codes",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Complete database of Stripe decline codes with descriptions and localized messages",
   "type": "module",
   "main": "./dist/index.cjs.js",
