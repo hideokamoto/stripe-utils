@@ -3,9 +3,13 @@ import type { DeclineCodeInfo } from '../src/index';
 import {
   formatDeclineMessage,
   getAllDeclineCodes,
+  getDeclineCategory,
   getDeclineDescription,
   getDeclineMessage,
   getDocVersion,
+  getMessageFromStripeError,
+  isHardDecline,
+  isSoftDecline,
   isValidDeclineCode,
 } from '../src/index';
 
@@ -137,6 +141,115 @@ describe('formatDeclineMessage', () => {
 
   it('should return undefined for invalid code', () => {
     const message = formatDeclineMessage('invalid_code');
+    expect(message).toBeUndefined();
+  });
+});
+
+describe('getDeclineCategory', () => {
+  it('should return SOFT_DECLINE for soft decline codes', () => {
+    expect(getDeclineCategory('insufficient_funds')).toBe('SOFT_DECLINE');
+    expect(getDeclineCategory('generic_decline')).toBe('SOFT_DECLINE');
+    expect(getDeclineCategory('do_not_honor')).toBe('SOFT_DECLINE');
+    expect(getDeclineCategory('try_again_later')).toBe('SOFT_DECLINE');
+  });
+
+  it('should return HARD_DECLINE for hard decline codes', () => {
+    expect(getDeclineCategory('fraudulent')).toBe('HARD_DECLINE');
+    expect(getDeclineCategory('stolen_card')).toBe('HARD_DECLINE');
+    expect(getDeclineCategory('lost_card')).toBe('HARD_DECLINE');
+    expect(getDeclineCategory('expired_card')).toBe('HARD_DECLINE');
+    expect(getDeclineCategory('incorrect_cvc')).toBe('HARD_DECLINE');
+    expect(getDeclineCategory('invalid_number')).toBe('HARD_DECLINE');
+  });
+
+  it('should return undefined for invalid code', () => {
+    expect(getDeclineCategory('invalid_code')).toBeUndefined();
+  });
+});
+
+describe('isHardDecline', () => {
+  it('should return true for hard decline codes', () => {
+    expect(isHardDecline('fraudulent')).toBe(true);
+    expect(isHardDecline('stolen_card')).toBe(true);
+    expect(isHardDecline('expired_card')).toBe(true);
+    expect(isHardDecline('incorrect_cvc')).toBe(true);
+  });
+
+  it('should return false for soft decline codes', () => {
+    expect(isHardDecline('insufficient_funds')).toBe(false);
+    expect(isHardDecline('generic_decline')).toBe(false);
+    expect(isHardDecline('try_again_later')).toBe(false);
+  });
+
+  it('should return false for invalid code', () => {
+    expect(isHardDecline('invalid_code')).toBe(false);
+  });
+});
+
+describe('isSoftDecline', () => {
+  it('should return true for soft decline codes', () => {
+    expect(isSoftDecline('insufficient_funds')).toBe(true);
+    expect(isSoftDecline('generic_decline')).toBe(true);
+    expect(isSoftDecline('do_not_honor')).toBe(true);
+  });
+
+  it('should return false for hard decline codes', () => {
+    expect(isSoftDecline('fraudulent')).toBe(false);
+    expect(isSoftDecline('stolen_card')).toBe(false);
+    expect(isSoftDecline('expired_card')).toBe(false);
+  });
+
+  it('should return false for invalid code', () => {
+    expect(isSoftDecline('invalid_code')).toBe(false);
+  });
+});
+
+describe('getMessageFromStripeError', () => {
+  it('should extract message from Stripe card error object', () => {
+    const stripeError = {
+      type: 'StripeCardError',
+      decline_code: 'insufficient_funds',
+      message: 'Your card has insufficient funds.',
+    };
+    const message = getMessageFromStripeError(stripeError);
+    expect(message).toBe('Please try again using an alternative payment method.');
+  });
+
+  it('should extract Japanese message from Stripe card error object', () => {
+    const stripeError = {
+      type: 'StripeCardError',
+      decline_code: 'insufficient_funds',
+      message: 'Your card has insufficient funds.',
+    };
+    const message = getMessageFromStripeError(stripeError, 'ja');
+    expect(message).toBe('別のお支払い方法を使用してもう一度お試しください。');
+  });
+
+  it('should handle error without decline_code', () => {
+    const stripeError = {
+      type: 'StripeCardError',
+      message: 'An error occurred.',
+    };
+    const message = getMessageFromStripeError(stripeError);
+    expect(message).toBeUndefined();
+  });
+
+  it('should handle non-card errors', () => {
+    const stripeError = {
+      type: 'StripeAPIError',
+      message: 'API error occurred.',
+    };
+    const message = getMessageFromStripeError(stripeError);
+    expect(message).toBeUndefined();
+  });
+
+  it('should handle invalid decline code in error', () => {
+    const stripeError = {
+      type: 'StripeCardError',
+      decline_code: 'invalid_code',
+      message: 'Some error.',
+    };
+    const message = getMessageFromStripeError(stripeError);
     expect(message).toBeUndefined();
   });
 });
